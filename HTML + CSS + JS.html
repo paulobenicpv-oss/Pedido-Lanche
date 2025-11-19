@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cardápio Delivery Imperial</title>
+  <meta name="description" content="Cardápio Delivery Lanches Imperial · Monte seu pedido e envie direto para o WhatsApp. Delivery e retirada no local.">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #050509;
+      --bg-card: #111118;
+      --accent: #ffca28;
+      --accent-soft: rgba(255, 202, 40, 0.16);
+      --text: #f5f5f7;
+      --text-muted: #b6b6c7;
+      --danger: #ff5252;
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at top, #151525 0%, #050509 55%, #020205 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 10px;
+      padding: 4px 16px 0;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-top: 6px;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .tag {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-soft);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: 8px;
+    }
+
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(255, 202, 40, 0.8);
+    }
+
+    /* HERO / LOGO */
+    .hero-banner {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 8px 0 14px;
+    }
+
+    .hero-logo-wrap {
+      border-radius: 999px;
+      padding: 10px;
+      background: radial-gradient(circle, rgba(255, 202, 40, 0.18) 0%, rgba(0, 0, 0, 0.9) 60%);
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-logo-wrap img {
+      display: block;
+      max-width: 220px;
+      width: 60vw;
+      height: auto;
+    }
+
+    .cardapio {
+      background: rgba(8, 8, 15, 0.9);
+      border-radius: 24px;
+      padding: 16px 14px 18px;
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(14px);
+    }
+
+    .sec-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      padding: 0 4px;
+    }
+
+    .sec-title span {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .sec-title small {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .categoria {
+      margin-top: 10px;
+    }
+
+    .categoria h2 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin: 8px 4px 4px;
+    }
+
+    .lista-produtos {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding-right: 2px;
+      margin-bottom: 8px;
+    }
+
+    .produto {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 10px;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .produto:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
+      border-color: rgba(255, 202, 40, 0.35);
+    }
+
+    .produto-ativo {
+      border-color: rgba(255, 202, 40, 0.8);
+      background: radial-gradient(circle at top left, rgba(255, 202, 40, 0.15), #111118);
+      box-shadow:
+        0 14px 38px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 202, 40, 0.35);
+    }
+
+    .produto-info h3 {
+      font-size: 0.96rem;
+      margin-bottom: 2px;
+    }
+
+    .produto-info p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .produto-preco {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--accent);
+    }
+
+    .produto-controles {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      grid-column: 1 / -1;
+    }
+
+    .btn-qtd {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: none;
+      background: #1b1b26;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-qtd:active {
+      transform: scale(0.94);
+    }
+
+    .btn-qtd:hover {
+      background: #252537;
+    }
+
+    .qtd-display {
+      min-width: 32px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .check input {
+      accent-color: var(--accent);
+      width: 14px;
+      height: 14px;
+    }
+
+    .resumo {
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      padding-top: 10px;
+      margin-top: 4px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 6px;
+      font-size: 0.8rem;
+    }
+
+    .resumo div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .resumo-label {
+      color: var(--text-muted);
+    }
+
+    .resumo-valor {
+      font-weight: 600;
+    }
+
+    .resumo-valor.total {
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .bloco {
+      margin-top: 12px;
+      padding: 8px 4px 0;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+
+    .bloco h3 {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .pagamento-opcoes,
+    .entrega-opcoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #161626;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .pill input {
+      accent-color: var(--accent);
+    }
+
+    .pill:hover {
+      background: #1f1f34;
+      border-color: rgba(255, 202, 40, 0.5);
+      box-shadow: 0 0 0 1px rgba(255, 202, 40, 0.2);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .form-grid-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 0.78rem;
+    }
+
+    .campo label {
+      color: var(--text-muted);
+    }
+
+    .campo input,
+    .campo textarea {
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #101018;
+      color: var(--text);
+      padding: 6px 8px;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .campo textarea {
+      resize: vertical;
+      min-height: 48px;
+      max-height: 90px;
+    }
+
+    .campo input:focus,
+    .campo textarea:focus {
+      border-color: rgba(255, 202, 40, 0.7);
+      box-shadow: 0 0 0 1px rgba(255, 202, 40, 0.35);
+    }
+
+    .btn-whats {
+      margin-top: 12px;
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff;
+      box-shadow:
+        0 12px 30px rgba(18, 140, 126, 0.65),
+        0 0 0 1px rgba(0, 0, 0, 0.65);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+
+    .btn-whats:hover {
+      filter: brightness(1.04);
+      transform: translateY(-1px);
+      box-shadow:
+        0 16px 38px rgba(18, 140, 126, 0.8),
+        0 0 0 1px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-whats:active {
+      transform: translateY(0);
+      box-shadow:
+        0 8px 22px rgba(18, 140, 126, 0.65),
+        0 0 0 1px rgba(0, 0, 0, 0.65);
+    }
+
+    .alerta {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--danger);
+      min-height: 16px;
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.25rem;
+      }
+      .cardapio {
+        padding: 14px 10px 16px;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="hero-banner">
+        <div class="hero-logo-wrap">
+          <!-- Certifique-se de que o arquivo existe com este nome -->
+          <img src="logo_sem_fundo.png" alt="Logo Lanches Imperial">
+        </div>
+      </div>
+
+      <h1>Cardápio Delivery Imperial</h1>
+      <p>Escolha seus lanches favoritos e envie o pedido direto para o WhatsApp.</p>
+      <div class="tag" aria-label="Informações de atendimento">
+        <span class="tag-dot"></span>
+        <span>Delivery & retirada no local · Pedidos até 23h</span>
+      </div>
+    </header>
+
+    <main class="cardapio">
+      <div class="sec-title">
+        <span>Cardápio</span>
+        <small>Selecione os itens e quantidades</small>
+      </div>
+
+      <div id="lista-produtos" class="lista-produtos"></div>
+
+      <section class="resumo" aria-label="Resumo do pedido">
+        <div>
+          <span class="resumo-label">Itens selecionados</span>
+          <span id="resumo-itens" class="resumo-valor">0</span>
+        </div>
+        <div>
+          <span class="resumo-label">Total estimado</span>
+          <span id="resumo-total" class="resumo-valor total">R$ 0,00</span>
+        </div>
+      </section>
+
+      <!-- ENTREGA -->
+      <section class="bloco" aria-label="Tipo de entrega">
+        <h3>Como você quer receber?</h3>
+        <div class="entrega-opcoes">
+          <label class="pill">
+            <input type="radio" name="entrega" value="Delivery">
+            <span>Delivery</span>
+          </label>
+          <label class="pill">
+            <input type="radio" name="entrega" value="Retirar no local">
+            <span>Retirar no local</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- PAGAMENTO -->
+      <section class="bloco" aria-label="Forma de pagamento">
+        <h3>Forma de pagamento</h3>
+        <div class="pagamento-opcoes">
+          <label class="pill">
+            <input type="radio" name="pagamento" value="Pix">
+            <span>Pix</span>
+          </label>
+          <label class="pill">
+            <input type="radio" name="pagamento" value="Débito">
+            <span>Débito</span>
+          </label>
+          <label class="pill">
+            <input type="radio" name="pagamento" value="Crédito">
+            <span>Crédito</span>
+          </label>
+          <label class="pill">
+            <input type="radio" name="pagamento" value="Dinheiro">
+            <span>Dinheiro</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- ENDEREÇO -->
+      <section class="bloco" aria-label="Endereço de entrega">
+        <h3>Endereço de entrega (para Delivery)</h3>
+        <div class="form-grid">
+          <div class="campo">
+            <label for="rua">Rua *</label>
+            <input id="rua" type="text" placeholder="Ex.: Av. Dr Pereira Barbosa">
+          </div>
+          <div class="campo">
+            <label for="numero">Número *</label>
+            <input id="numero" type="text" placeholder="Ex.: 870">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="campo">
+            <label for="bairro">Bairro</label>
+            <input id="bairro" type="text" placeholder="Ex.: Areão">
+          </div>
+          <div class="campo">
+            <label for="cidade">Cidade</label>
+            <input id="cidade" type="text" placeholder="Ex.: Taubaté - SP">
+          </div>
+        </div>
+        <div class="form-grid-1">
+          <div class="campo">
+            <label for="referencia">Ponto de referência</label>
+            <input id="referencia" type="text" placeholder="Ex.: Próximo à praça / mercado">
+          </div>
+        </div>
+      </section>
+
+      <!-- OBSERVAÇÃO -->
+      <section class="bloco" aria-label="Observação do pedido">
+        <h3>Observação do pedido</h3>
+        <div class="campo">
+          <label for="obs">Ex.: tirar cebola, mandar maionese à parte…</label>
+          <textarea id="obs"></textarea>
+        </div>
+      </section>
+
+      <button class="btn-whats" id="btn-whats" type="button">
+        <span>Enviar pedido pelo WhatsApp</span>
+      </button>
+
+      <div id="alerta" class="alerta" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = "5512991254023";
+
+    const categorias = [
+      {
+        nome: "Lanches Tradicionais",
+        itens: [
+          { id: "hamburguer", nome: "Hamburguer", preco: 18.00,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, 2 carnes e batata palha." },
+          { id: "xburguer", nome: "X Burguer", preco: 22.00,
+            desc: "Pão, maionese de alho, purê, milho, ketchup, 2 carnes, presunto, mussarela e batata palha." },
+          { id: "xsalada", nome: "X Salada", preco: 23.50,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, 2 carnes, presunto, mussarela e batata palha." },
+          { id: "xegg", nome: "X Egg", preco: 24.50,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, ovo, 2 carnes, presunto, mussarela e batata palha." },
+          { id: "xbacon", nome: "X Bacon", preco: 28.50,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, bacon, 2 carnes, presunto, mussarela e batata palha." }
+        ]
+      },
+      {
+        nome: "Lanches Especiais",
+        itens: [
+          { id: "xtudo", nome: "X Tudo", preco: 31.50,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, ovo, bacon, 2 carnes, presunto, mussarela e batata palha." },
+          { id: "xfrango", nome: "X Frango", preco: 28.00,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, frango, mussarela e batata palha." },
+          { id: "xfrangoegg", nome: "X Frango Egg", preco: 29.50,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, frango, ovo, mussarela e batata palha." },
+          { id: "xfrangobacon", nome: "X Frango Bacon", preco: 32.50,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, frango, bacon, mussarela e batata palha." },
+          { id: "xfrangotudo", nome: "X Frango Tudo", preco: 36.00,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, ovo, bacon, frango, mussarela e batata palha." },
+          { id: "misto", nome: "Misto", preco: 21.00,
+            desc: "Pão, maionese de alho, purê, ketchup, 2 presuntos, 2 mussarelas e batata palha." },
+          { id: "bauru", nome: "Bauru", preco: 23.50,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, 2 presuntos, 2 mussarelas e batata palha." },
+          { id: "queijoquente", nome: "Queijo Quente", preco: 25.00,
+            desc: "Pão, maionese de alho, purê, alface, tomate, milho, ketchup, 3 mussarelas e batata palha." }
+        ]
+      },
+      {
+        nome: "Adicionais",
+        itens: [
+          { id: "presunto", nome: "Presunto", preco: 1.50 },
+          { id: "mussarela", nome: "Mussarela", preco: 3.00 },
+          { id: "ovo", nome: "Ovo", preco: 3.00 },
+          { id: "bacon_add", nome: "Bacon", preco: 7.00 },
+          { id: "carne_add", nome: "Carne", preco: 3.00 },
+          { id: "frango_add", nome: "Frango", preco: 6.00 },
+          { id: "catupiry", nome: "Catupiry", preco: 5.00 },
+          { id: "cheddar", nome: "Cheddar", preco: 5.00 }
+        ]
+      },
+      {
+        nome: "Bebidas",
+        itens: [
+          { id: "agua", nome: "Água", preco: 3.50 },
+          { id: "aguagas", nome: "Água c/ gás", preco: 4.50 },
+          { id: "refrilata", nome: "Refrigerante Lata", preco: 7.00 },
+          { id: "refri600", nome: "Refrigerante 600ml", preco: 8.00 },
+          { id: "caculinha", nome: "Caçulinha", preco: 3.50 },
+          { id: "refri1l", nome: "Refrigerante 1L", preco: 10.00 },
+          { id: "refri2l", nome: "Refrigerante 2L", preco: 15.00 },
+          { id: "sucotropical", nome: "Suco Tropical", preco: 7.00 }
+        ]
+      }
+    ];
+
+    const listaEl = document.getElementById("lista-produtos");
+    const resumoItensEl = document.getElementById("resumo-itens");
+    const resumoTotalEl = document.getElementById("resumo-total");
+    const alertaEl = document.getElementById("alerta");
+    const btnWhats = document.getElementById("btn-whats");
+
+    const estado = {}; // { id: { qtd, selecionado, ref } }
+
+    function formatBRL(v) {
+      return v.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+
+    function atualizarVisualCard(id) {
+      const info = estado[id];
+      const card = document.querySelector(`.produto[data-id="${id}"]`);
+      if (!card || !info) return;
+
+      if (info.selecionado && info.qtd > 0) {
+        card.classList.add("produto-ativo");
+      } else {
+        card.classList.remove("produto-ativo");
+      }
+    }
+
+    function renderProdutos() {
+      listaEl.innerHTML = "";
+
+      categorias.forEach(cat => {
+        const catDiv = document.createElement("section");
+        catDiv.className = "categoria";
+        catDiv.setAttribute("aria-label", cat.nome);
+
+        const titulo = document.createElement("h2");
+        titulo.textContent = cat.nome;
+        catDiv.appendChild(titulo);
+
+        cat.itens.forEach(p => {
+          if (!estado[p.id]) {
+            estado[p.id] = { qtd: 0, selecionado: false, ref: p };
+          }
+
+          const card = document.createElement("article");
+          card.className = "produto";
+          card.dataset.id = p.id;
+
+          card.innerHTML = `
+            <div class="produto-info">
+              <h3>${p.nome}</h3>
+              ${p.desc ? `<p>${p.desc}</p>` : ""}
+              <div class="produto-preco">${formatBRL(p.preco)}</div>
+            </div>
+            <div></div>
+            <div class="produto-controles">
+              <button class="btn-qtd" data-id="${p.id}" data-tipo="menos" aria-label="Diminuir quantidade de ${p.nome}">−</button>
+              <span class="qtd-display" id="qtd-${p.id}" aria-live="polite">0</span>
+              <button class="btn-qtd" data-id="${p.id}" data-tipo="mais" aria-label="Aumentar quantidade de ${p.nome}">+</button>
+
+              <label class="check">
+                <input type="checkbox" id="chk-${p.id}" data-id="${p.id}">
+                <span>Selecionar</span>
+              </label>
+            </div>
+          `;
+
+          catDiv.appendChild(card);
+        });
+
+        listaEl.appendChild(catDiv);
+      });
+
+      // Delegação de eventos – quantidade
+      listaEl.addEventListener("click", (e) => {
+        const btn = e.target.closest(".btn-qtd");
+        if (!btn) return;
+
+        const id = btn.dataset.id;
+        const tipo = btn.dataset.tipo;
+        const info = estado[id];
+        if (!info) return;
+
+        if (tipo === "mais") {
+          info.qtd++;
+          info.selecionado = true;
+          const chk = document.getElementById(`chk-${id}`);
+          if (chk) chk.checked = true;
+        } else if (tipo === "menos" && info.qtd > 0) {
+          info.qtd--;
+          if (info.qtd === 0) {
+            info.selecionado = false;
+            const chk = document.getElementById(`chk-${id}`);
+            if (chk) chk.checked = false;
+          }
+        }
+
+        document.getElementById(`qtd-${id}`).textContent = info.qtd;
+        atualizarVisualCard(id);
+        atualizarResumo();
+      });
+
+      // Delegação de eventos – checkbox
+      listaEl.addEventListener("change", (e) => {
+        if (!e.target.matches('input[type="checkbox"]')) return;
+
+        const id = e.target.dataset.id;
+        const info = estado[id];
+        if (!info) return;
+
+        info.selecionado = e.target.checked;
+
+        if (info.selecionado && info.qtd === 0) {
+          info.qtd = 1;
+        } else if (!info.selecionado) {
+          info.qtd = 0;
+        }
+
+        document.getElementById(`qtd-${id}`).textContent = info.qtd;
+        atualizarVisualCard(id);
+        atualizarResumo();
+      });
+    }
+
+    function atualizarResumo() {
+      let totalItens = 0;
+      let totalValor = 0;
+
+      Object.values(estado).forEach(info => {
+        if (info.selecionado && info.qtd > 0) {
+          totalItens += info.qtd;
+          totalValor += info.qtd * info.ref.preco;
+        }
+      });
+
+      resumoItensEl.textContent = totalItens;
+      resumoTotalEl.textContent = formatBRL(totalValor);
+    }
+
+    function getPagamentoSelecionado() {
+      const radios = document.querySelectorAll('input[name="pagamento"]');
+      for (const r of radios) if (r.checked) return r.value;
+      return null;
+    }
+
+    function getEntregaSelecionada() {
+      const radios = document.querySelectorAll('input[name="entrega"]');
+      for (const r of radios) if (r.checked) return r.value;
+      return null;
+    }
+
+    function montarMensagemWhats() {
+      const linhas = [];
+      let temItem = false;
+
+      linhas.push("🍔 *Novo pedido – Lanches Imperial*");
+      linhas.push("");
+      linhas.push("*Itens selecionados:*");
+
+      Object.values(estado).forEach(info => {
+        if (info.selecionado && info.qtd > 0) {
+          temItem = true;
+          const p = info.ref;
+          const subtotal = info.qtd * p.preco;
+          linhas.push(`• ${p.nome}  x${info.qtd}  (${formatBRL(subtotal)})`);
+        }
+      });
+
+      if (!temItem) return null;
+
+      linhas.push("");
+      linhas.push(`💰 *Total aproximado:* ${resumoTotalEl.textContent}`);
+      linhas.push("");
+
+      const pagamento = getPagamentoSelecionado() || "Não informado";
+      linhas.push(`💳 *Forma de pagamento:* ${pagamento}`);
+
+      const entrega = getEntregaSelecionada() || "Não informado";
+      linhas.push("");
+      linhas.push(`📍 *Entrega:* ${entrega}`);
+
+      const rua = document.getElementById("rua").value.trim();
+      const numero = document.getElementById("numero").value.trim();
+      const bairro = document.getElementById("bairro").value.trim();
+      const cidade = document.getElementById("cidade").value.trim();
+      const referencia = document.getElementById("referencia").value.trim();
+
+      if (entrega === "Delivery") {
+        linhas.push("*Endereço de entrega:*");
+        linhas.push(`Rua: ${rua || "-"}  Nº: ${numero || "-"}`);
+        linhas.push(`Bairro: ${bairro || "-"}`);
+        linhas.push(`Cidade: ${cidade || "-"}`);
+        if (referencia) linhas.push(`Ref.: ${referencia}`);
+      } else if (entrega === "Retirar no local") {
+        linhas.push("*Retirada no local:*");
+        linhas.push("Lanches Imperial – Av. Dr Pereira Barbosa, 870 – Areão, Taubaté/SP");
+      }
+
+      const obs = document.getElementById("obs").value.trim();
+      if (obs) {
+        linhas.push("");
+        linhas.push("*Observações:*");
+        linhas.push(obs);
+      }
+
+      linhas.push("");
+      linhas.push("Enviado pelo cardápio online. ✅");
+
+      return linhas.join("\n");
+    }
+
+    btnWhats.addEventListener("click", () => {
+      alertaEl.textContent = "";
+
+      const mensagem = montarMensagemWhats();
+      if (!mensagem) {
+        alertaEl.textContent = "Selecione pelo menos 1 item para montar o pedido.";
+        return;
+      }
+
+      const entrega = getEntregaSelecionada();
+      if (!entrega) {
+        alertaEl.textContent = "Selecione se é Delivery ou Retirar no local.";
+        return;
+      }
+
+      const pagamento = getPagamentoSelecionado();
+      if (!pagamento) {
+        alertaEl.textContent = "Selecione a forma de pagamento.";
+        return;
+      }
+
+      if (entrega === "Delivery") {
+        const rua = document.getElementById("rua").value.trim();
+        const numero = document.getElementById("numero").value.trim();
+        if (!rua || !numero) {
+          alertaEl.textContent = "Para Delivery, informe pelo menos rua e número.";
+          return;
+        }
+      }
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, "_blank");
+    });
+
+    // Inicialização
+    renderProdutos();
+    atualizarResumo();
+  </script>
+</body>
+</html>
